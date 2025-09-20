@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soul Sync — Home</title>
+  <style>
+    :root{
+      --bg:#e8fbf5; --accent-1:#2d9c90; --accent-2:#46c7b0; --text:#042022;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,Roboto,'Poppins',Arial;background:linear-gradient(180deg,var(--bg),#ddf6ee);color:var(--text);height:100vh;width:100vw;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .splash{position:relative;height:100%;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;opacity:0;animation:fadeIn 1.2s ease forwards}
+    .splash.fade-out{opacity:0;transition:opacity 0.8s ease}
+    .splash img{max-width:80%;max-height:70%;object-fit:contain;border-radius:12px;box-shadow:0 12px 40px rgba(12,44,40,0.08);opacity:0;animation:fadeInUp 1.4s ease 0.3s forwards}
+    .btn{padding:16px 28px;border:none;border-radius:14px;font-size:1.1rem;font-weight:600;cursor:pointer;background:linear-gradient(90deg,var(--accent-2),var(--accent-1));color:white;box-shadow:0 14px 36px rgba(46,104,100,0.18);transition:transform .25s,opacity 0.6s ease;opacity:0;animation:fadeIn 1s ease 0.9s forwards}
+    .btn:hover{transform:translateY(-4px)}
+    .hidden{display:none}
+    .auth-wrapper{width:100%;height:100%;display:none;opacity:0;transition:opacity 0.8s ease}
+    .auth-wrapper.fade-in{display:block;opacity:1}
+    iframe{width:100%;height:100%;border:none}
+
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+  </style>
+</head>
+<body>
+  <!-- Splash/Home screen with logo -->
+  <div id="home" class="splash">
+    <img src="images/Logo Soul Sync.jpg" alt="Soul Sync Logo" />
+    <button class="btn" id="get-started">Get Started</button>
+  </div>
+
+  <!-- Auth + Visme login section -->
+  <div id="auth-section" class="auth-wrapper">
+    <iframe srcdoc='
+      <!DOCTYPE html>
+      <html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /></head>
+      <body style="margin:0;padding:0;height:100vh">
+        <div class="visme_d" data-title="Soul Sync User Information" data-url="8kvnyy8m-soul-sync-user-information?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="146237"></div>
+        <script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>
+      </body></html>'></iframe>
+  </div>
+
+  <script>
+    const home = document.getElementById('home');
+    const authSection = document.getElementById('auth-section');
+    document.getElementById('get-started').addEventListener('click',()=>{
+      home.classList.add('fade-out');
+      setTimeout(()=>{
+        home.classList.add('hidden');
+        authSection.classList.add('fade-in');
+      },800);
+    });
+  </script>
+</body>
+</html>

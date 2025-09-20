@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Soul Sync</title>
+  <meta name="description" content="Transparent privacy policy describing the data we collect, how we use it, and your rights." />
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; line-height: 1.6; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    :root {
+      --bg: #0b1220;           
+      --panel: #0f172a;       
+      --muted: #94a3b8;        
+      --text: #e2e8f0;         
+      --brand: #38bdf8;        
+      --brand-weak: #bae6fd;   
+      --ring: rgba(56,189,248,.5);
+      --border: #1f2a44;
+      --code-bg: #0b1325;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 10px 25px rgba(2, 6, 23, .5);
+      --radius: 16px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #619bc2;
+        --panel: #ffffff;
+        --muted: #475569;
+        --text: #0f172a;
+        --brand: #0ea5e9;
+        --brand-weak: #0369a1;
+        --ring: rgba(14,165,233,.35);
+        --border: #e2e8f0;
+        --code-bg: #f1f5f9;
+        --shadow: 0 8px 18px rgba(2, 6, 23, .08);
+      }
+    }
+
+    body { background: radial-gradient(1200px 800px at 80% -10%, rgba(56,189,248,.15), transparent),
+                         radial-gradient(1000px 600px at -10% 20%, rgba(14,165,233,.08), transparent),
+                         var(--bg);
+           color: var(--text); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem 5rem; }
+    header {
+      position: sticky; top: 0; z-index: 20; backdrop-filter: saturate(180%) blur(10px);
+      background: color-mix(in srgb, var(--bg) 70%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1rem; max-width: 1100px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; }
+    .logo { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--brand), var(--brand-weak)); box-shadow: var(--shadow); }
+    .brand h1 { font-size: 1.05rem; margin: 0; letter-spacing: .3px; }
+
+    .policy-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .hero { padding: 2.25rem 1.25rem; border-bottom: 1px solid var(--border); background:
+      radial-gradient(800px 240px at 10% -10%, rgba(56,189,248,.15), transparent),
+      linear-gradient(180deg, color-mix(in srgb, var(--panel) 92%, transparent), var(--panel)); }
+    .hero h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); line-height: 1.2; margin: 0 0 .5rem; }
+    .hero p { margin: 0; color: var(--muted); }
+
+    .content { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 1.25rem; }
+    @media (min-width: 960px) {
+      .content { grid-template-columns: 290px 1fr; }
+    }
+
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: calc(var(--radius) - 4px); padding: 1rem; box-shadow: var(--shadow); }
+    .toc h3 { margin-top: 0; font-size: 1rem; letter-spacing: .5px; color: var(--muted); }
+    .toc ul { list-style: none; padding: 0; margin: .5rem 0 0; display: grid; gap: .5rem; }
+    .toc a { text-decoration: none; border: 1px solid var(--border); border-radius: 12px; padding: .6rem .7rem; display: block; transition: border-color .2s, background .2s; }
+    .toc a:hover, .toc a:focus { border-color: var(--brand); outline: none; background: color-mix(in srgb, var(--brand) 6%, transparent); }
+
+    main { min-width: 0; }
+    section { scroll-margin-top: 100px; }
+    h2.section-title { font-size: 1.15rem; letter-spacing: .4px; margin: 0; color: var(--brand-weak); text-transform: uppercase; }
+    h3 { margin: .25rem 0 .75rem; font-size: clamp(1.15rem, 2.1vw, 1.35rem); }
+    p { margin: 0 0 1rem; }
+    ul { margin: 0 0 1rem 1.2rem; }
+    li { margin: .3rem 0; }
+
+    .kicker { font-weight: 600; color: var(--brand-weak); text-transform: uppercase; letter-spacing: .08em; }
+    .badge { display: inline-block; font-size: .75rem; border: 1px solid var(--border); padding: .25rem .5rem; border-radius: 999px; color: var(--muted); }
+    .muted { color: var(--muted); }
+
+    
+    .callout { border-left: 4px solid var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); padding: .85rem 1rem; border-radius: 8px; }
+
+   
+    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: .1rem .35rem; }
+
+   
+    footer { margin-top: 2rem; color: var(--muted); font-size: .95rem; display: grid; gap: .75rem; }
+
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; padding: .5rem .75rem; background: var(--panel); color: var(--text); border-radius: 10px; outline: 3px solid var(--ring); z-index: 50; }
+    :is(a, button, input, summary, select, textarea):focus { outline: 3px solid var(--ring); outline-offset: 2px; border-radius: 8px; }
+
+    @media print {
+      header, .toc, .back-to-top { display: none !important; }
+      body { background: #fff; color: #000; }
+      .policy-card, .card { border: none; box-shadow: none; }
+      .container { padding: 0; }
+    }
+
+   
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .back-to-top { position: fixed; right: 1rem; bottom: 1rem; padding: .6rem .8rem; border-radius: 999px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; box-shadow: var(--shadow); }
+    .back-to-top:hover { border-color: var(--brand); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header role="banner">
+    <div class="header-inner">
+      <a class="brand" href="F:\Privacy Policy\SOUL Sync 2 logo.png" aria-label="Soul Sync">
+        <span class="logo" aria-hidden="true"></span>
+        <h1>Soul Sync</h1>
+      </a>
+      <span class="badge" id="effective">Effective: <time datetime="2025-12-25">December 25, 2025</time></span>
+    </div>
+  </header>
+
+  <div id="top" class="container">
+    <article class="policy-card" aria-labelledby="doc-title">
+      <div class="hero">
+        <p class="kicker" id="doc-title">Privacy Policy</p>
+        <h2>We respect your privacy.
+        </h2>
+        <p>Soul Sync (“we,” “our,” or “us”) respects your privacy and is committed to protecting the personal information you share when using our platform. This Privacy Policy explains how we collect, use, and safeguard your data.
+</p>
+      </div>
+
+      <div class="content">
+        <aside class="card toc" aria-label="Table of contents">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#data-we-collect">Informatiom We Collect</a></li>
+            <li><a href="#how-we-use-data">How We Use Your Information</a></li>
+            <li><a href="#cookies">How we protect your Information</a></li>
+            <li><a href="#sharing">Sharing of Information</a></li>
+            <li><a href="#retention">Your Choices</a></li>
+            <li><a href="#your-rights">Children's Privacy</a></li>
+            <li><a href="#changes">Changes to This Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </aside>
+        <main id="main">
+          <section id="data-we-collect" aria-labelledby="s1">
+            <h2 class="section-title" id="s1">Section 1</h2>
+            <h3>Information We Collect</h3>
+            <p>When you use Soul Sync, we may collect the following types of information:</p>
+            <ul>
+              <li><strong>Personal Information:</strong> Name, email address, or phone number (only if voluntarily provided during sign-up or SOS calls).</li>
+              <li><strong>Chat Data:</strong> Messages exchanged with our chatbot to provide supportive responses. These chats are not shared with third parties.</li>
+              <li><strong>Device Information:</strong> Browser type, operating system, and general usage data for performance improvements.</li>
+              <li><strong>Camera Access(Face Detection):</strong> If you choose to use the face detection feature, video data is processed locally on your device and is not stored or transmitted.</li>
+            </ul>
+            <p class="muted">Certain data is collected automatically via cookies, SDKs, or similar technologies. See <a href="#cookies">Cookies & Tracking</a>.</p>
+          </section>
+
+          <section id="how-we-use-data" aria-labelledby="s2">
+            <h2 class="section-title" id="s2">Section 2</h2>
+            <h3>How We Use Your Information</h3>
+             <p>We use your information to:</p>
+            <div class="grid-2">
+              <div class="card">
+                <ul>
+                  <li>Provide safe and reliable support services.</li>
+                  <li>Enable SOS features for contacting parents, guardians, or local authorities.</li>
+                  <li>Improve app functionality and user experience.</li>
+                  <li>Generate uplifting and positive blog content.</li>
+                </ul>
+              </div>
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section id="cookies" aria-labelledby="s3">
+            <h2 class="section-title" id="s3">Section 3</h2>
+            <h3>How we protect your information</h3>
+            <ul>
+              <li>All sensitive data is encrypted and securely handled.</li>
+              <li> Chat conversations and camera data remain private and are not shared externally.</li>
+              <li> We follow industry-standard practices to safeguard your information.</li>
+            </ul>
+            <div class="callout">
+              <p><strong>Opt-out:</strong> You may opt out of certain tracking by using the “Do Not Track” settings in your browser or platform-level privacy controls where available.</p>
+            </div>
+          </section>
+
+          <section id="sharing" aria-labelledby="s4">
+            <h2 class="section-title" id="s4">Section 4</h2>
+            <h3>Sharing of Information</h3>
+            <p>We do not sell your personal information.Information is only shared in the following cases:</p>
+            <ul>
+              <li> With your explicit consent.</li>
+              <li> To comply with legal obligations or emergency situations.</li>
+              <li>If you choose to initiate SOS calls, your contact information will be shared directly with the selected recipient.</li>
+            </ul>
+          </section>
+
+          <section id="retention" aria-labelledby="s5">
+            <h2 class="section-title" id="s5">Section 5</h2>
+            <h3>Your Choices :</h3>
+            <li>You can opt-out of providing personal information.</li>
+            <li>You can disable camera access for face detection.</li>
+             <li>You may request deletion of your personal data by contacting us at [ insert contact email ].</li>
+
+          </section>
+
+          <section id="your-rights" aria-labelledby="s6">
+            <h2 class="section-title" id="s6">Section 6</h2>
+            <h3>Children's Privacy</h3>
+            <p>Soul Sync is designed to provide support for all age groups. We do not knowingly collect data from children under 13 without parental consent.</p>
+          </section>
+          <section id="changes" aria-labelledby="s10">
+            <h2 class="section-title" id="s10">Section 7</h2>
+            <h3>Changes to This Policy</h3>
+            <p>We may update this Privacy Policy to reflect improvements or legal requirements. Changes will be posted with a revised “Effective Date.”</p>
+          </section>
+
+          <section id="contact" aria-labelledby="s11">
+            <h2 class="section-title" id="s11">Section 8</h2>
+            <h3>Contact Us</h3>
+            <p>If you have questions or concerns about this Privacy Policy, please contact us at:</p>
+            <address>
+              <strong>Soul Sync Inc.</strong><br>
+              <a href="soulsync.smile@gmail.com"> Email</a>
+            </address>
+          </section>
+          <section id="your-rights" aria-labelledby="s6">
+            <h2 class="section-title" id="s6"></h2>
+            <h3>⚠ Soul Sync Disclaimer</h3>
+            <p>Effective Date: 25/12/2025</p>
+
+<p>Soul Sync is designed to provide emotional support, positive resources, and access to helpful tools, but it is not a substitute for professional mental health care or emergency services.</p>
+
+<p><strong> Points :</strong></p>
+
+<p><strong>Not Medical Advice</strong></p>
+
+<p>The content, chatbot interactions, and features within Soul Sync are for informational and supportive purposes only.
+
+They should not be taken as professional medical, psychiatric, or psychological advice.</p>
+
+<p><strong>Emergency Situations</strong></p>
+
+<p>If you are in immediate danger or experiencing a medical emergency, please dial your local emergency number immediately.</p>
+
+<p>The SOS feature in Soul Sync is designed to quickly connect you with parents, guardians, or authorities but may not always guarantee immediate help.</p>
+
+<p><strong>No Liability</strong></p>
+
+<p>While we strive to provide a safe and supportive environment, Soul Sync cannot be held responsible for outcomes related to reliance on its chatbot, blogs, or features.</p>
+<p> Use the platform at your own discretion.</p>
+
+<p><strong>Professional Help</strong></p>
+
+<p>If you are struggling with your mental health, we strongly encourage seeking support from licensed professionals such as therapists, counselors, or doctors.</p>
+
+<p>Soul Sync should be used as a complementary tool, not as a replacement for professional care.</p>
+
+<p><strong>Global Helpline Resources</strong></p>
+
+<p>If you are in crisis, please contact a trusted local resource or one of the following:</p>
+
+<p><strong>United States :</strong> National Suicide Prevention Lifeline - Dial 988 </p>
+
+<p><strong>United Kingdom : </strong> - Dial 116 123</p>
+
+<p><strong>India : </strong> AASRA Helpline - Dial +91-9820466726</p>
+<p><strong>Other Countries : </strong> search for your local suicide prevention hotline.</p>
+
+Final Note
+
+By using Soul Sync, you acknowledge this disclaimer and understand the limits of the platform. Our mission is to provide encouragement, positivity, and quick access to supportive resources — but you are never alone, and professional help is always available.</p>
+          </section>
+
+          <footer role="contentinfo">
+            <p><span class="muted">Related:</span> <a href="#">Terms of Service</a> • <a href="#">Cookie Policy</a> • <a href="#">Data Processing Addendum</a></p>
+            <p class="muted">© <span id="year"></span> Soul Sync, Inc. All rights reserved.</p>
+          </footer>
+        </main>
+      </div>
+    </article>
+  </div>
+
+  <a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

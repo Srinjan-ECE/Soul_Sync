@@ -1,0 +1,64 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #00bb80, #ffffff);
+  color: rgb(14, 0, 92);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Navigation */
+.nav-link {
+  color: #008060;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background: #00bb80;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.3);
+}
+
+.nav-link.active {
+  background: #008060;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.4);
+}
+
+/* Hero image */
+.home-image {
+  width: 75%;
+  max-width: 480px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  animation: fadeSlideIn 1.2s ease-in-out;
+}
+
+/* Floating animations */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+/* Fade-in animation */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}

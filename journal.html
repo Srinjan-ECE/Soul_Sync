@@ -1,0 +1,65 @@
+<!-- journal.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Soul Sync — Journal</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar"><div class="brand"><div class="logo"></div><div>Soul Sync</div></div>
+      <div class="nav-right"><a href="index.html">Home</a></div></nav>
+
+    <div class="header"><h1>Mood Journal</h1><p class="center">Log moods, short notes, and view your recent trend.</p></div>
+
+    <section class="card">
+      <label>How are you feeling? (emoji)</label>
+      <input id="mood" placeholder="e.g. 🙂" style="padding:8px;border-radius:8px;border:1px solid #eee;width:100px"/>
+      <div style="margin-top:8px"><textarea id="note" rows="3" placeholder="Short note..." style="width:100%;padding:8px;border-radius:8px;border:1px solid #eee"></textarea></div>
+      <div style="margin-top:8px" class="flex">
+        <button class="btn" onclick="saveEntry()">Save Entry</button>
+        <button class="btn small" onclick="clearJournal()">Clear All</button>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+      <h3>Recent Entries</h3>
+      <div id="entries"></div>
+      <div style="margin-top:12px;color:#6b4636">Streak: <span id="streak">0</span> days</div>
+    </section>
+  </div>
+
+<script>
+  function saveEntry(){
+    const mood = document.getElementById('mood').value.trim() || '🙂';
+    const note = document.getElementById('note').value.trim();
+    const arr = loadJSON('soul_journal', []);
+    arr.unshift({t:Date.now(), mood, note});
+    saveJSON('soul_journal', arr);
+    document.getElementById('mood').value=''; document.getElementById('note').value='';
+    render();
+    toast('Saved');
+  }
+  function clearJournal(){ if(confirm('Clear all entries?')){ localStorage.removeItem('soul_journal'); render(); } }
+
+  function render(){
+    const arr = loadJSON('soul_journal', []);
+    const entries = document.getElementById('entries');
+    if(arr.length===0) entries.innerHTML = '<p class="muted">No entries yet.</p>';
+    else entries.innerHTML = arr.slice(0,10).map(e=>`<div style="padding:8px;border-radius:8px;margin-bottom:8px;background:#fff8f0;color:#1b1b1b"><b>${e.mood}</b> <small style="color:#6b4636">${new Date(e.t).toLocaleString()}</small><div style="margin-top:6px">${e.note||''}</div></div>`).join('');
+    computeStreak(arr);
+  }
+
+  function computeStreak(arr){
+    if(!arr || arr.length===0){ document.getElementById('streak').innerText = 0; return; }
+    // simple daily streak calculation
+    let days = new Set(arr.map(e=>new Date(e.t).toDateString()));
+    document.getElementById('streak').innerText = days.size;
+  }
+
+  render();
+</script>
+</body>
+</html>

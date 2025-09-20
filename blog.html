@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mental Health Wellness — Full Featured Demo</title>
+  <meta name="description" content="A vibrant mental wellness hub with articles, guided videos, live sessions, printable worksheets, localization, and fully functional UI widgets for demo purposes.">
+
+  <!-- Lottie player and PDF libraries -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root{
+      --bg1:linear-gradient(180deg,#e8fffb,#dcf4eb 40%,#f1f9ff 100%);
+      --accent-1:#0ea5a4; --accent-2:#2dd4bf; --accent-3:#06b6d4; --accent-warm:#ff7a59;
+      --pink:#ff80bf; --purple:#9b7bff; --sun:#ffd166; --leaf:#67e6d1;
+      --muted:#6b7280; --text:#052724; --card:#ffffff;
+    }
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter, Poppins, system-ui,-apple-system,'Segoe UI',Roboto,Arial;background:var(--bg1);color:var(--text);-webkit-font-smoothing:antialiased}
+    .bg-blobs{position:fixed;inset:0;z-index:-5;pointer-events:none;overflow:hidden}
+    .blob{position:absolute;filter:blur(48px);opacity:.9;mix-blend-mode:screen;transform-origin:center}
+    .blob.b1{width:640px;height:640px;background:radial-gradient(circle at 30% 40%,#a5f3eb,#67e6d1);left:-160px;top:-120px;animation:floatSlow 12s ease-in-out infinite}
+    .blob.b2{width:480px;height:480px;background:radial-gradient(circle at 60% 60%,#ffd6e0,#ff80bf);right:-120px;top:-60px;animation:floatSlow 18s ease-in-out infinite}
+    .blob.b3{width:420px;height:420px;background:radial-gradient(circle at 50% 40%,#ffd4b5,#ffd166);left:40%;bottom:-160px;animation:floatSlow 16s ease-in-out infinite}
+    @keyframes floatSlow{0%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(6deg)}100%{transform:translateY(0) rotate(0deg)}}
+
+    header{position:sticky;top:10px;margin:16px;z-index:60}
+    .nav-wrap{max-width:1200px;margin:0 auto;background:linear-gradient(90deg,rgba(255,255,255,0.85),rgba(255,255,255,0.7));backdrop-filter:blur(6px);border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(10,40,36,.06)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--purple));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:0 12px 30px rgba(8,54,50,.12)}
+    nav a{margin-right:12px;color:var(--text);text-decoration:none;font-weight:600}
+    .nav-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .btn{background:var(--card);border:none;padding:9px 12px;border-radius:10px;cursor:pointer;box-shadow:0 6px 18px rgba(6,41,39,.06)}
+    .btn.ghost{background:transparent;border:1px solid rgba(6,41,39,.06)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent-2),var(--accent-3));color:white;font-weight:700;transition:transform .18s,box-shadow .18s}
+    .btn.primary:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(13,96,92,.12)}
+
+    main{max-width:1200px;margin:26px auto;padding:18px;display:grid;grid-template-columns:1fr 380px;gap:22px}
+    .hero{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.85));padding:26px;border-radius:18px;box-shadow:0 18px 44px rgba(11,46,40,.06);position:relative;overflow:hidden}
+    .hero-grid{display:flex;gap:18px;align-items:center}
+    .hero-left{flex:1}
+    .hero h1{margin:0;font-size:28px;line-height:1.05}
+    .hero p{margin:10px 0;color:var(--muted)}
+    .hero-visual{width:280px;height:280px;border-radius:18px;background:linear-gradient(135deg,#ffffff33,#ffffff00);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(8,54,50,.06)}
+
+    .filters{display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap}
+    .search{display:flex;gap:8px;align-items:center}
+    .search input{padding:10px 12px;border-radius:10px;border:1px solid #e7eef0;width:320px}
+    .tag{padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,#fff,#ffffff);color:var(--muted);cursor:pointer;border:1px solid rgba(0,0,0,.04)}
+
+    .posts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px}
+    .post{background:linear-gradient(180deg,#ffffff,#f7fffd);padding:14px;border-radius:14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 12px 30px rgba(8,54,50,.04);transition:transform .18s ease,box-shadow .18s}
+    .post:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(8,54,50,.09)}
+    .thumb{width:120px;height:84px;border-radius:10px;object-fit:cover}
+    .post h3{margin:0;font-size:16px}
+    .meta{font-size:12px;color:var(--muted)}
+    .excerpt{color:var(--muted);margin-top:8px}
+
+    .card{background:linear-gradient(180deg,#fff,#f9fffb);padding:16px;border-radius:14px;box-shadow:0 12px 30px rgba(8,54,50,.04)}
+    aside .card{margin-bottom:12px}
+
+    .video-thumb{width:100%;height:120px;border-radius:10px;overflow:hidden}
+    .lottie-small{width:120px;height:120px}
+
+    .breathing{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .breath-ring{width:120px;height:120px;border-radius:999px;background:radial-gradient(circle at 40% 40%,rgba(13,96,92,.12),rgba(13,96,92,.02));display:flex;align-items:center;justify-content:center}
+    .breath-dot{width:24px;height:24px;border-radius:50%;background:linear-gradient(90deg,var(--accent-1),var(--accent-3));transition:transform 1.6s cubic-bezier(.2,.9,.2,1)}
+
+    .worksheet{border-radius:10px;padding:12px;background:linear-gradient(180deg,#ffffff,#f7fffd);box-shadow:0 10px 30px rgba(8,54,50,.04)}
+    .print-cta{display:flex;gap:8px;margin-top:10px}
+
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;background:linear-gradient(90deg,#fff,#ffffff);box-shadow:inset 0 -6px 24px rgba(0,0,0,0.04)}
+
+    .bookmark{background:linear-gradient(90deg,var(--sun),#ffd4b5);padding:6px 8px;border-radius:8px;font-weight:700}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(5,39,36,0.5);display:flex;align-items:center;justify-content:center;z-index:200}
+    .modal{width:min(760px,94%);max-height:90vh;overflow:auto;background:white;border-radius:12px;padding:18px;box-shadow:0 30px 80px rgba(5,39,36,.3)}
+    .modal header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .modal h2{margin:0;font-size:18px}
+    .modal .close{margin-left:auto;background:transparent;border:none;font-size:18px;cursor:pointer}
+    .modal .modal-body{color:var(--muted)}
+
+    @media (max-width:980px){main{grid-template-columns:1fr 320px}.posts{grid-template-columns:1fr}.hero-visual{display:none}.search input{width:180px}}@media (max-width:640px){.nav-wrap{padding:10px}.logo{width:48px;height:48px}}@media print{body{background:white} header, .btn, .nav-actions{display:none} main{grid-template-columns:1fr} .post{box-shadow:none}}
+  </style>
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+  <header>
+    <div class="nav-wrap" role="navigation" aria-label="Main navigation">
+      <div class="brand"><div class="logo">MH</div><div><div style="font-weight:800">Mental Health Wellness</div><div style="font-size:12px;color:var(--muted)">Full-featured demo</div></div></div>
+      <nav aria-label="Primary links" style="margin-left:18px">
+        <a href="#blogs">Blogs</a>
+        <a href="#videos">Videos</a>
+        <a href="#sessions">Sessions</a>
+        <a href="#community">Community</a>
+      </nav>
+      <div class="nav-actions">
+        <select id="lang" aria-label="Choose language"><option value="en">English</option><option value="bn">বাংলা</option></select>
+        <button class="btn ghost" id="btn-subscribe">Subscribe</button>
+        <button class="btn primary" id="btn-join">Join Live</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="hero">
+        <div class="hero-grid">
+          <div class="hero-left">
+            <h1 id="pageTitle">Mental Health Wellness — A rich, interactive demo</h1>
+            <p id="pageDesc">Explore articles, videos, live sessions, printable worksheets, save resources, and join guided activities. Everything here is functional in-demo using localStorage and client-side libraries.</p>
+
+            <div class="filters">
+              <div class="search"><input id="searchInput" placeholder="Search articles or authors"><button class="btn" id="searchBtn">Search</button></div>
+              <div class="tag" data-tag="meditation" onclick="filterByTag('meditation')">Meditation</div>
+              <div class="tag" data-tag="cbt" onclick="filterByTag('cbt')">CBT</div>
+              <div class="tag" data-tag="sleep" onclick="filterByTag('sleep')">Sleep</div>
+              <div class="tag" data-tag="self-care" onclick="filterByTag('self-care')">Self-care</div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:12px">
+              <button class="btn primary" onclick="document.getElementById('videos').scrollIntoView({behavior:'smooth'})">Explore Videos</button>
+              <button class="btn" onclick="document.getElementById('worksheets').scrollIntoView({behavior:'smooth'})">Download Worksheets</button>
+              <button class="btn" onclick="openModal('Bookmarks', renderBookmarksHtml())">My Bookmarks</button>
+            </div>
+
+            <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+              <span class="badge">Evidence-based</span>
+              <span class="badge">Guided sessions</span>
+              <span class="badge">Printable</span>
+              <span class="badge">Localized</span>
+            </div>
+
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_tfb3estd.json" background="transparent" speed="1" style="width:260px;height:260px" loop autoplay></lottie-player>
+          </div>
+        </div>
+
+        <div class="posts" id="posts"></div>
+
+      </div>
+
+      <!-- Videos section -->
+      <div id="videos" class="card" style="margin-top:18px">
+        <h2>Video Library</h2>
+        <p class="meta">Click a video to open an interactive player modal. "Play All" will queue videos in new tabs (demo).</p>
+        <div id="videoGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px"></div>
+        <div style="margin-top:12px;display:flex;gap:8px"><button class="btn" id="btn-play-all">Play All</button><button class="btn" id="btn-quiz">Quick Quiz</button></div>
+      </div>
+
+      <!-- Sessions & Worksheets -->
+      <div id="sessions" class="card" style="margin-top:18px">
+        <h2>Sessions & Worksheets</h2>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <div style="flex:1;min-width:220px" class="card"><h3>Daily Calm</h3><p class="meta">Auto-play calm audio & visuals — 12 minutes</p><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" onclick="enroll('Daily Calm')">Enroll</button><button class="btn" onclick="startGuided('Daily Calm')">Open</button></div></div>
+          <div style="flex:1;min-width:220px" class="card"><h3>Focus Kit</h3><p class="meta">Pomodoro + guided micro-breaks</p><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" onclick="openModal('Focus Kit','<p>Start a 25‑minute focus session with guided micro-breaks.</p><p><button class=\'btn primary\' onclick=\'startFocus()\'>Start 25:00</button></p>')">Open</button></div></div>
+        </div>
+
+        <div id="worksheets" style="margin-top:14px">
+          <h3>Printable Worksheets</h3>
+          <div id="worksheet-cbt" class="worksheet" style="margin-top:8px">
+            <h4>CBT Thought Record</h4>
+            <p>A structured worksheet to capture situations, emotions and alternative responses.</p>
+            <ol>
+              <li>Situation: ___________________________</li>
+              <li>Emotion(s) & intensity (1–10): ________</li>
+              <li>Automatic thought(s): __________________</li>
+              <li>Evidence for the thought: ______________</li>
+              <li>Evidence against the thought: __________</li>
+              <li>Alternative balanced thought: __________</li>
+              <li>New emotion & intensity: ______________</li>
+            </ol>
+            <div class="print-cta"><button class="btn primary" onclick="printSection(document.getElementById('worksheet-cbt'))">Print</button><button class="btn" onclick="downloadWorksheet('cbt')">Download PDF</button></div>
+          </div>
+
+          <div id="worksheet-sleep" class="worksheet" style="margin-top:12px">
+            <h4>Sleep Hygiene Tracker</h4>
+            <p>Track sleep routine for one week.</p>
+            <table style="width:100%;border-collapse:collapse"><thead><tr><th>Day</th><th>Bedtime</th><th>Wake</th><th>Quality</th><th>Notes</th></tr></thead><tbody><tr><td>Mon</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Tue</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Wed</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Thu</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Fri</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Sat</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr><tr><td>Sun</td><td>_______</td><td>_______</td><td>___</td><td>________</td></tr></tbody></table>
+            <div class="print-cta"><button class="btn primary" onclick="printSection(document.getElementById('worksheet-sleep'))">Print Tracker</button><button class="btn" onclick="downloadWorksheet('sleep')">Download PDF</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community: comments & submit -->
+      <div id="community" class="card" style="margin-top:18px">
+        <h2>Community</h2>
+        <p class="meta">Share thoughts, save bookmarks and download worksheets. Comments stored locally in demo.</p>
+        <form id="commentForm" style="display:flex;gap:8px;flex-direction:column;margin-top:8px">
+          <input id="name" placeholder="Your name" required>
+          <textarea id="comment" placeholder="Your thoughts" rows="3" required></textarea>
+          <div style="display:flex;gap:8px"><button class="btn primary" type="submit">Post</button><button class="btn" type="button" onclick="clearComments()">Clear</button></div>
+        </form>
+        <div id="commentList" style="margin-top:12px"></div>
+      </div>
+
+    </section>
+
+    <aside>
+      <div class="card">
+        <h3>Quick Links</h3>
+        <ul style="padding-left:18px;color:var(--muted)" id="linksList"></ul>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Mini Video Gallery</h3>
+        <div id="sideVideos" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Newsletter</h3>
+        <p class="meta">Sign up for weekly curated wellness tips.</p>
+        <input id="newsletterEmail" placeholder="Email address">
+        <div style="margin-top:8px"><button class="btn primary" onclick="subscribeNews()">Subscribe</button></div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Saved Resources</h3>
+        <div id="bookmarkList" style="margin-top:8px"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer style="max-width:1200px;margin:34px auto;padding:18px;text-align:center;color:var(--muted)">© Mental Health Wellness — Demo · Full-featured · Localized</footer>
+
+  <!-- Modal container (managed by JS) -->
+  <div id="modalRoot" aria-live="polite"></div>
+
+  <script>
+    /***** Utility & Modal Component *****/
+    function escapeHtml(s){ return String(s).replace(/[&"'<>]/g, function(c){ return {'&':'&amp;','"':'&quot;',"'":"&#39;","<":"&lt;",">":"&gt;"}[c]; }); }
+    function openModal(title, htmlContent){ const backdrop=document.createElement('div'); backdrop.className='modal-backdrop'; backdrop.tabIndex=-1; const modal=document.createElement('div'); modal.className='modal'; modal.innerHTML = `<header><h2>${escapeHtml(title)}</h2><button class="close" aria-label="Close modal">✕</button></header><div class="modal-body">${htmlContent}</div>`; backdrop.appendChild(modal); document.body.appendChild(backdrop); const closeBtn = modal.querySelector('.close'); closeBtn.addEventListener('click', ()=> closeModal(backdrop)); backdrop.addEventListener('click', (e)=> { if(e.target===backdrop) closeModal(backdrop); }); function onKey(e){ if(e.key==='Escape') closeModal(backdrop); } document.addEventListener('keydown', onKey); backdrop._cleanup = ()=> document.removeEventListener('keydown', onKey); setTimeout(()=>{ const focusable = modal.querySelector('button, [href], input, textarea, select'); if(focusable) focusable.focus(); },50); return backdrop; }
+    function closeModal(backdrop){ if(!backdrop) return; if(backdrop._cleanup) backdrop._cleanup(); backdrop.remove(); }
+
+    /***** Persistent demo storages: subscriptions, enrollments, bookmarks, comments *****/
+    function saveToStorage(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+    function loadFromStorage(key){ try{ return JSON.parse(localStorage.getItem(key)||'null'); }catch(e){return null;} }
+
+    // subscriptions
+    function subscribeNews(){ const e=document.getElementById('newsletterEmail').value.trim(); if(!e) return openModal('Subscribe','<p>Please enter an email address.</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>'); const subs = loadFromStorage('mh_subs') || []; if(!subs.includes(e)){ subs.push(e); saveToStorage('mh_subs', subs); openModal('Subscribed', `<p>Thanks — added to demo newsletter: <strong>${escapeHtml(e)}</strong></p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">OK</button></p>`); } else { openModal('Subscribed','<p>You are already subscribed (demo).</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>'); } }
+
+    // enrollments
+    function enroll(name){ const enrolls = loadFromStorage('mh_enroll') || []; enrolls.push({name,ts:Date.now()}); saveToStorage('mh_enroll', enrolls); openModal('Enrolled', `<p>You are enrolled in: <strong>${escapeHtml(name)}</strong> (demo)</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>`); }
+
+    // bookmarks
+    function toggleBookmark(item){ const list = loadFromStorage('mh_bookmarks') || []; const exists = list.find(x=>x.id===item.id && x.type===item.type); if(exists){ const updated = list.filter(x=>!(x.id===item.id && x.type===item.type)); saveToStorage('mh_bookmarks', updated); } else { list.unshift(item); saveToStorage('mh_bookmarks', list); } renderBookmarkList(); }
+    function renderBookmarkList(){ const list = loadFromStorage('mh_bookmarks') || []; const el = document.getElementById('bookmarkList'); if(!el) return; if(!list.length){ el.innerHTML = '<div style="color:var(--muted)">No saved resources yet.</div>'; return; } el.innerHTML = list.map(it=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f7f5"><div><strong>${escapeHtml(it.title)}</strong><div style="font-size:12px;color:var(--muted)">${escapeHtml(it.type)}</div></div><div><button class="btn" onclick='openBookmarked(${JSON.stringify(it).replace(/'/g,"\\'")})'>Open</button>&nbsp;<button class="btn" onclick='removeBookmark(${JSON.stringify(it).replace(/'/g,"\\'")})'>Remove</button></div></div>`).join(''); }
+    function removeBookmark(it){ const list = loadFromStorage('mh_bookmarks')||[]; const updated = list.filter(x=>!(x.id===it.id && x.type===it.type)); saveToStorage('mh_bookmarks', updated); renderBookmarkList(); }
+    function openBookmarked(it){ if(it.type==='video') openVideoModal(it.videoId, it.title); else if(it.type==='article') openArticle(it.id); }
+
+    // comments
+    function loadComments(){ const c = loadFromStorage('mh_comments') || []; renderComments(c); }
+    function renderComments(list){ const commentList = document.getElementById('commentList'); if(!commentList) return; if(!list.length) { commentList.innerHTML = '<div style="color:var(--muted)">No comments yet — share your thoughts.</div>'; return; } commentList.innerHTML = list.map(cm=>`<div style="padding:8px;border-bottom:1px solid #eef6f3"><strong>${escapeHtml(cm.name)}</strong><div style="color:var(--muted);font-size:13px">${escapeHtml(cm.text)}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${new Date(cm.ts).toLocaleString()}</div></div>`).join(''); }
+    document.getElementById('commentForm').onsubmit = (e)=>{ e.preventDefault(); const name=document.getElementById('name').value.trim(); const text=document.getElementById('comment').value.trim(); if(!name||!text) return; const arr = loadFromStorage('mh_comments')||[]; arr.unshift({name,text,ts:Date.now()}); saveToStorage('mh_comments', arr); document.getElementById('name').value=''; document.getElementById('comment').value=''; loadComments(); }
+    function clearComments(){ localStorage.removeItem('mh_comments'); loadComments(); }
+
+    /***** Content: more blogs and videos *****/
+    const articles = [
+      {id:1, tag:'meditation', title:'How to Start a Daily Mindfulness Practice', author:'Dr. Asha Sen', excerpt:'A practical 5‑step routine to begin mindfulness.', img:'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=60'},
+      {id:2, tag:'cbt', title:'Cognitive Behavioral Tools for Anxiety', author:'Rohit Kumar', excerpt:'Actionable CBT techniques to calm anxious thoughts.', img:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=60'},
+      {id:3, tag:'sleep', title:'Sleep Hygiene — Rituals That Work', author:'Nina Rao', excerpt:'Science-based habits to improve sleep onset and quality.', img:'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=60'},
+      {id:4, tag:'self-care', title:'Managing Burnout at College', author:'S. Deb', excerpt:'Boundary-setting and energy management strategies for students.', img:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=60'},
+      {id:5, tag:'anxiety', title:'Quick Grounding Exercises for Panic', author:'Leena Das', excerpt:'3-minute grounding routines to reduce panic symptoms.', img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=60'},
+      {id:6, tag:'productivity', title:'Mindful Productivity — Focus Without Burnout', author:'A. Bhattacharya', excerpt:'Combine focus techniques with micro-breaks to sustain energy.', img:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=60'},
+      {id:7, tag:'relationships', title:'Compassionate Communication', author:'R. Sen', excerpt:'How to hold difficult conversations with presence and calm.', img:'https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=800&q=60'},
+      {id:8, tag:'mindset', title:'Building Resilience Over Time', author:'Dr. Meera Iyer', excerpt:'Small practices to grow emotional resilience.', img:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60'}
+    ];
+
+    const videos = [
+      {videoId:'8ClAmBQi-4M', title:'Psychologist Explains Stress', url:'https://www.youtube.com/watch?v=8ClAmBQi-4M'},
+      {videoId:'sKqcQ3BXyZs', title:'Guided Meditation 10 min', url:'https://www.youtube.com/watch?v=sKqcQ3BXyZs'},
+      {videoId:'ZToicYcHIOU', title:'Breathing Exercise', url:'https://www.youtube.com/watch?v=ZToicYcHIOU'},
+      {videoId:'t2Y3Z9L3f2A', title:'Short Sleep Guided', url:'https://www.youtube.com/watch?v=t2Y3Z9L3f2A'}
+    ];
+
+    // render articles
+    const postsEl = document.getElementById('posts'); function renderArticles(list){ postsEl.innerHTML=''; list.forEach(a=>{ const div=document.createElement('div'); div.className='post'; div.innerHTML = `
+        <img class='thumb' src='${a.img}' alt='${escapeHtml(a.title)}'>
+        <div>
+          <h3>${escapeHtml(a.title)}</h3>
+          <div class='meta'>${escapeHtml(a.author)} • <span>${escapeHtml(a.tag)}</span></div>
+          <div class='excerpt'>${escapeHtml(a.excerpt)}</div>
+        </div>
+        <div style='margin-left:auto;display:flex;flex-direction:column;gap:6px'>
+          <button class='btn' onclick="openArticle(${a.id})">Read</button>
+          <button class='btn' onclick='toggleBookmark(${JSON.stringify({id:a.id,type:"article",title:a.title}).replace(/'/g,"\\'")})'>Save</button>
+        </div>
+      `; postsEl.appendChild(div); }); }
+    renderArticles(articles);
+
+    // search and tag filter
+    document.getElementById('searchBtn').onclick = ()=>{ const v=document.getElementById('searchInput').value.toLowerCase(); renderArticles(articles.filter(a=>a.title.toLowerCase().includes(v)||a.excerpt.toLowerCase().includes(v)||a.author.toLowerCase().includes(v))); };
+    function filterByTag(tag){ renderArticles(articles.filter(a=>a.tag===tag)); }
+
+    // open article modal with Lottie and links
+    function openArticle(id){ const a = articles.find(x=>x.id===id); if(!a) return; const body = `<div style="display:flex;gap:12px"><div style='flex:1'><p style=\"font-weight:600\">${escapeHtml(a.author)}</p><p>${escapeHtml(a.excerpt)}</p><p><a href=\"#\" onclick=\"openExternalArticle(${id})\">Read full article (demo)</a></p></div><div style='width:140px'><lottie-player src='https://assets10.lottiefiles.com/packages/lf20_iwmd6pyr.json' background='transparent' speed='1' loop autoplay style='width:120px;height:120px'></lottie-player></div></div><p style=\"margin-top:12px\"><button class=\"btn primary\" onclick=\"toggleBookmark(${JSON.stringify({id:a.id,type:'article',title:a.title}).replace(/'/g,"\\'")})\">Save</button>&nbsp;<button class=\"btn\" onclick=\"closeModal(document.querySelector(\'.modal-backdrop\'))\">Close</button></p>`; openModal(a.title, body); }
+    function openExternalArticle(id){ closeModal(document.querySelector('.modal-backdrop')); const a=articles.find(x=>x.id===id); if(!a) return; // demo: open Google search for title
+      window.open('https://www.google.com/search?q='+encodeURIComponent(a.title), '_blank'); }
+
+    // render videos grid
+    const videoGrid = document.getElementById('videoGrid'); function renderVideos(){ videoGrid.innerHTML=''; videos.forEach(v=>{ const div=document.createElement('div'); div.className='card'; div.innerHTML = `<h4>${escapeHtml(v.title)}</h4><div class='video-thumb'><img src='https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg' alt='${escapeHtml(v.title)}' style='width:100%;height:100%;object-fit:cover;border-radius:8px;cursor:pointer' onclick="openVideoModal('${v.videoId}','${escapeHtml(v.title)}')"></div><div style='display:flex;gap:6px;margin-top:8px'><a class='btn' href='${v.url}' target='_blank'>Open on YouTube</a><button class='btn' onclick="openVideoModal('${v.videoId}','${escapeHtml(v.title)}')">Play</button><button class='btn' onclick='toggleBookmark(${JSON.stringify({videoId:v.videoId,type:"video",title:v.title}).replace(/'/g,"\\'")})'>Save</button></div>`; videoGrid.appendChild(div); }); }
+    renderVideos();
+
+    // side videos
+    const sideVideos = document.getElementById('sideVideos'); videos.slice(0,4).forEach(v=>{ const ifr = document.createElement('img'); ifr.src = 'https://img.youtube.com/vi/'+v.videoId+'/mqdefault.jpg'; ifr.style.width='100%'; ifr.style.height='80px'; ifr.style.objectFit='cover'; ifr.style.borderRadius='8px'; ifr.style.cursor='pointer'; ifr.onclick = ()=> openVideoModal(v.videoId, v.title); sideVideos.appendChild(ifr); });
+
+    // Play all: open each in new tab sequentially (demo)
+    document.getElementById('btn-play-all').onclick = ()=>{ videos.forEach((v,i)=> setTimeout(()=> window.open(v.url,'_blank'), i*800)); };
+
+    // quick quiz
+    document.getElementById('btn-quiz').onclick = ()=>{ openModal('Reflection Quiz', `<ol><li>On a scale 1-5, how stressed are you today? <input id=\"q1\" type=\"number\" min=1 max=5></li><li>Did you practice any relaxation today? <select id=\"q2\"><option value=\"yes\">Yes</option><option value=\"no\">No</option></select></li></ol><p><button class=\"btn primary\" onclick=\"saveQuizResults()\">Save</button>&nbsp;<button class=\"btn\" onclick=\"closeModal(document.querySelector(\\'.modal-backdrop\\'))\">Close</button></p>`); };
+    function saveQuizResults(){ const v1 = document.getElementById('q1').value; const v2 = document.getElementById('q2').value; const arr = loadFromStorage('mh_quiz')||[]; arr.unshift({stress:v1,relaxed:v2,ts:Date.now()}); saveToStorage('mh_quiz', arr); closeModal(document.querySelector('.modal-backdrop')); openModal('Saved', '<p>Your reflection has been saved locally (demo).</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>'); }
+
+    // video modal
+    function openVideoModal(videoId, title){ const body = `<div style="display:flex;gap:12px;flex-direction:column"><div style="position:relative;padding-top:56.25%"><iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:8px" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe></div><p style="margin-top:8px"><button class='btn' onclick="window.open('https://www.youtube.com/watch?v=${videoId}','_blank')">Open on YouTube</button>&nbsp;<button class='btn' onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p></div>`; openModal(title, body); }
+
+    // Bookmarks helper render on load
+    function renderBookmarksHtml(){ const list = loadFromStorage('mh_bookmarks')||[]; if(!list.length) return '<div style="color:var(--muted)">No bookmarks yet.</div>'; return list.map(it=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f7f5"><div><strong>${escapeHtml(it.title)}</strong><div style="font-size:12px;color:var(--muted)">${escapeHtml(it.type)}</div></div><div><button class="btn" onclick='openBookmarked(${JSON.stringify(it).replace(/'/g,"\\'")})'>Open</button></div></div>`).join(''); }
+
+    // open bookmarked resource
+    window.openBookmarked = function(it){ closeModal(document.querySelector('.modal-backdrop')); if(it.type==='video') openVideoModal(it.videoId, it.title); else if(it.type==='article') openArticle(it.id); }
+
+    // toggleBookmark wrapper accepts object literal by string replacement earlier
+    window.toggleBookmark = function(obj){ toggleBookmark(obj); }
+
+    // Focus timer (Pomodoro) simple implementation
+    let focusTimer=null; function startFocus(){ closeModal(document.querySelector('.modal-backdrop')); openModal('Focus Timer', `<div id=\"focusDisplay\" style=\"font-size:22px;font-weight:700;text-align:center\">25:00</div><div style=\"display:flex;gap:8px;justify-content:center;margin-top:12px\"><button class=\"btn primary\" id=\"focusPause\">Pause</button><button class=\"btn\" id=\"focusStop\">Stop</button></div>`); let remaining = 25*60; const display = document.getElementById('focusDisplay'); focusTimer = setInterval(()=>{ remaining--; const mm = String(Math.floor(remaining/60)).padStart(2,'0'); const ss = String(remaining%60).padStart(2,'0'); if(display) display.textContent = mm + ':' + ss; if(remaining<=0){ clearInterval(focusTimer); focusTimer=null; if(display) display.textContent='Done'; } },1000); document.getElementById('focusPause').onclick = ()=>{ if(focusTimer){ clearInterval(focusTimer); focusTimer=null; document.getElementById('focusPause').textContent='Resume'; } else { // resume
+        startFocusResume(remaining);
+      } }; document.getElementById('focusStop').onclick = ()=>{ if(focusTimer) clearInterval(focusTimer); focusTimer=null; closeModal(document.querySelector('.modal-backdrop')); } }
+    function startFocusResume(remaining){ openModal('Focus Timer', `<div id=\"focusDisplay\" style=\"font-size:22px;font-weight:700;text-align:center\">${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}</div><div style=\"display:flex;gap:8px;justify-content:center;margin-top:12px\"><button class=\"btn primary\" id=\"focusPause\">Pause</button><button class=\"btn\" id=\"focusStop\">Stop</button></div>`); focusTimer = setInterval(()=>{ remaining--; const display = document.getElementById('focusDisplay'); if(display) display.textContent = String(Math.floor(remaining/60)).padStart(2,'0') + ':' + String(remaining%60).padStart(2,'0'); if(remaining<=0){ clearInterval(focusTimer); focusTimer=null; if(display) display.textContent='Done'; } },1000); document.getElementById('focusPause').onclick = ()=>{ if(focusTimer){ clearInterval(focusTimer); focusTimer=null; document.getElementById('focusPause').textContent='Resume'; } else { startFocusResume(remaining); } }; document.getElementById('focusStop').onclick = ()=>{ if(focusTimer) clearInterval(focusTimer); focusTimer=null; closeModal(document.querySelector('.modal-backdrop')); } }
+
+    // PDF generation using html2canvas + jsPDF (keeps previous implementation)
+    async function downloadWorksheet(id){ const node = id==='cbt' ? document.getElementById('worksheet-cbt') : document.getElementById('worksheet-sleep'); if(!node) return openModal('Error','<p>Worksheet not found.</p>'); openModal('Preparing PDF','<p>Please wait while your worksheet is converted to PDF...</p>'); try{ const canvas = await html2canvas(node, {scale:2, useCORS:true, backgroundColor: null}); const imgData = canvas.toDataURL('image/png'); const { jsPDF } = window.jspdf; const pdf = new jsPDF({orientation:'portrait', unit:'pt', format:[canvas.width, canvas.height]}); pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height); const fileName = id==='cbt' ? 'CBT-Thought-Record.pdf' : 'Sleep-Tracker.pdf'; pdf.save(fileName); closeModal(document.querySelector('.modal-backdrop')); openModal('Download Ready', `<p>Your PDF (${fileName}) has been downloaded.</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>`); } catch(err){ closeModal(document.querySelector('.modal-backdrop')); openModal('Error', `<p>PDF generation failed. ${escapeHtml(String(err))}</p><p><button class="btn" onclick="closeModal(document.querySelector(\'.modal-backdrop\'))">Close</button></p>`); } }
+
+    // small helpers and initialization
+    function renderLinks(){ const u = [ {title:'NIMH', url:'https://www.nimh.nih.gov/'}, {title:'VeryWell Mind', url:'https://www.verywellmind.com/'}, {title:'NAMI', url:'https://www.nami.org/'} ]; document.getElementById('linksList').innerHTML = u.map(x=>`<li><a href='${x.url}' target='_blank'>${escapeHtml(x.title)}</a></li>`).join(''); }
+    renderLinks(); renderBookmarkList(); loadComments();
+
+    // Modal interactions for join live
+    document.getElementById('btn-join').addEventListener('click', ()=>{ openModal('Join Live','<p>Join our demo live stream (YouTube Live). This opens a modal player.</p><p><button class="btn primary" onclick="openVideoModal(\'ZToicYcHIOU\',\'Demo Live\')">Open Live (demo)</button>&nbsp;<button class="btn" onclick="closeModal(document.querySelector(\\'.modal-backdrop\\'))">Close</button></p>'); });
+
+    // local bookmarks render on load
+    window.addEventListener('load', ()=>{ renderArticles(articles); renderVideos(); renderBookmarkList(); });
+
+  </script>
+</body>
+</html>

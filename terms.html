@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Soul Sync – Terms of Service" />
+  <title>Soul Sync – Terms of Service</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; }
+    :root {
+      --bg: #0b0c10;
+      --surface: #111218;
+      --card: #161821;
+      --text: #e6e9ef;
+      --muted: #b7bcc7;
+      --brand: #7c5cff;
+      --brand-600: #6b4af7;
+      --accent: #39c6b3;
+      --danger: #ff6363;
+      --ring: rgba(124, 92, 255, 0.35);
+      --border: #262a34;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius: 16px;
+      --maxw: 900px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f8fb;
+        --surface: #ffffff;
+        --card: #ffffff;
+        --text: #12141a;
+        --muted: #545b6b;
+        --brand: #5a43e6;
+        --brand-600: #4e37de;
+        --accent: #17a2a5;
+        --danger: #d91f1f;
+        --ring: rgba(90, 67, 230, 0.25);
+        --border: #e6e8ef;
+        --shadow: 0 10px 30px rgba(24, 28, 35, 0.08);
+      }
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(124,92,255,.12), transparent 40%),
+                  radial-gradient(1200px 800px at 100% 0%, rgba(57,198,179,.12), transparent 40%),
+                  var(--bg);
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: saturate(140%) blur(8px);
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), var(--shadow);
+    }
+
+    .brand span {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    nav a:hover, nav a:focus {
+      outline: none;
+      border-color: var(--border);
+      background: color-mix(in srgb, var(--brand) 7%, transparent);
+      box-shadow: 0 0 0 6px var(--ring);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
+      line-height: 1.2;
+      margin: 12px 0 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
+
+    h2 { font-size: 1.25rem; margin: 28px 0 10px; }
+    p { margin: 0 0 14px; }
+    ul { margin: 0 0 14px 1.2rem; }
+
+    .callout {
+      border: 1px solid color-mix(in srgb, var(--danger) 55%, var(--border));
+      background: color-mix(in srgb, var(--danger) 8%, var(--surface));
+      border-radius: 14px;
+      padding: 16px 16px 16px 14px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .callout .badge {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--danger), #ff9b9b);
+      display: grid; place-items: center; color: #fff; font-weight: 800;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 8px;
+      margin: 14px 0 4px;
+      list-style: none;
+      padding: 0;
+    }
+    .toc a {
+      display: block; padding: 10px 12px; border-radius: 12px;
+      border: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      background: var(--card);
+    }
+    .toc a:hover, .toc a:focus {
+      outline: none; box-shadow: 0 0 0 6px var(--ring);
+      border-color: color-mix(in srgb, var(--brand) 50%, var(--border));
+    }
+
+    footer {
+      margin-top: 36px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    .muted { color: var(--muted); }
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); }
+
+    @media print {
+      header.site { display: none; }
+      .wrap { padding: 0; }
+      .card { box-shadow: none; border: none; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #666; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site" role="banner">
+    <div class="site-inner">
+      <a class="brand" href="#top">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Soul Sync</span>
+      </a>
+      <nav aria-label="Quick links">
+        <a href="#contact">Contact</a>
+        <a href="#changes-to-terms">Updates</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap" role="main">
+    <article class="card" aria-labelledby="title">
+      <header>
+        <h1 id="title">Soul Sync – Terms of Service</h1>
+        <p class="subtitle" aria-label="Effective date">Effective Date: <strong>25/12/2025</strong></p>
+      </header>
+      <p>Welcome to Soul Sync! By accessing or using our website, mobile app, or related services (“Services”), you agree to these Terms of Service (“Terms”). Please read them carefully.</p>
+      <nav aria-label="Table of contents" class="divider" style="margin-top: 10px"></nav>
+      <ul class="toc" aria-describedby="toc-desc">
+        <li><a href="#acceptance-of-terms">1. Acceptance of Terms</a></li>
+        <li><a href="#purpose-of-the-service">2. Purpose of the Service</a></li>
+        <li><a href="#eligibility">3. Eligibility</a></li>
+        <li><a href="#user-responsibilities">4. User Responsibilities</a></li>
+        <li><a href="#emergency-disclaimer">5. Emergency Disclaimer</a></li>
+        <li><a href="#privacy">6. Privacy</a></li>
+        <li><a href="#intellectual-property">7. Intellectual Property</a></li>
+        <li><a href="#limitation-of-liability">8. Limitation of Liability</a></li>
+        <li><a href="#changes-to-terms">9. Changes to Terms</a></li>
+        <li><a href="#contact">10. Contact Us</a></li>
+      </ul>
+
+      <section id="acceptance-of-terms">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By using Soul Sync, you acknowledge that you have read, understood, and agreed to these Terms. If you do not agree, you must not use our Services.</p>
+      </section>
+
+      <section id="purpose-of-the-service">
+        <h2>2. Purpose of the Service</h2>
+        <p>Soul Sync is designed as a supportive and wellness platform to provide comfort, resources, chatbot interactions, SOS assistance, and uplifting content. Soul Sync is not a substitute for professional medical advice or emergency services.</p>
+      </section>
+
+      <section id="eligibility">
+        <h2>3. Eligibility</h2>
+        <p>You must be at least 13 years old to use our Services.</p>
+        <p>If you are under 18, you must have parental or guardian consent.</p>
+      </section>
+
+      <section id="user-responsibilities">
+        <h2>4. User Responsibilities</h2>
+        <p>When using Soul Sync, you agree to:</p>
+        <ul>
+          <li>Provide accurate information if registering or signing in.</li>
+          <li>Use the Services only for lawful purposes.</li>
+          <li>Not misuse, hack, or disrupt our Services.</li>
+        </ul>
+      </section>
+
+      <section id="emergency-disclaimer" aria-labelledby="ed-title">
+        <h2 id="ed-title">5. Emergency Disclaimer</h2>
+        <div class="callout" role="note" aria-label="Emergency disclaimer">
+          <div class="badge" aria-hidden="true">!</div>
+          <div>
+            <p>Soul Sync provides supportive tools but is not an emergency service.</p>
+            <p>If you are in immediate danger or crisis, call your local emergency number.</p>
+            <p>SOS features are designed to connect you with parents, guardians, or local authorities, but availability may vary.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="privacy">
+        <h2>6. Privacy</h2>
+        <p>Your privacy is important to us. Our data collection and use practices are outlined in our Privacy Policy, which forms part of these Terms.</p>
+      </section>
+
+      <section id="intellectual-property">
+        <h2>7. Intellectual Property</h2>
+        <p>All content, design, and features of Soul Sync are the intellectual property of the Soul Sync team. Users may not copy, modify, or distribute content without permission.</p>
+      </section>
+
+      <section id="limitation-of-liability">
+        <h2>8. Limitation of Liability</h2>
+        <p>Soul Sync is provided “as is” without warranties of any kind.</p>
+        <p>We are not liable for any damages, losses, or harm resulting from reliance on the Services.</p>
+      </section>
+
+      <section id="changes-to-terms">
+        <h2>9. Changes to Terms</h2>
+        <p>We may update these Terms from time to time. Continued use of the Services after changes indicates acceptance of the updated Terms.</p>
+      </section>
+
+      <section id="contact">
+        <h2>10. Contact Us</h2>
+        <p>If you have questions or concerns about these Terms, contact us at: <strong>📧 soulsync.smile@gmail.com</strong></p>
+      </section>
+
+      <div class="divider"></div>
+      <p class="muted">These Terms of Service are intended for general informational purposes and may be adapted to your specific jurisdictional or product needs. Consider consulting legal counsel to tailor this document.</p>
+
+      <p style="margin-top: 12px"><a href="#top" class="kbd" aria-label="Back to top">Back to top ↑</a></p>
+    </article>
+
+    <footer role="contentinfo">
+      <p>© <span id="year"></span> Soul Sync. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

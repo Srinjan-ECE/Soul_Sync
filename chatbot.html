@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fun Chatbot — Nabha Style</title>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  <style>
+    /* Professional teal + sea-green inspired theme (compact) */
+    :root{
+      --bg:#dcf4eb; --accent-1:#4b9e9a; --accent-2:#67b6aa; --accent-cta:#f97316; --trust:#047857;
+      --muted:#6b7280; --text:#0f172a; --card:#ffffff; --glass: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, Poppins, system-ui, Arial; margin:0; background:linear-gradient(180deg,var(--bg),#eaf7f0); color:var(--text); display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+    .app{width:100%;max-width:920px;background:var(--card);border-radius:18px;box-shadow:0 18px 50px rgba(10,40,36,.08);overflow:hidden;display:grid;grid-template-columns:360px 1fr}
+
+    /* Left panel: persona + controls */
+    .left{padding:28px;background:linear-gradient(180deg,rgba(75,158,154,0.06),transparent);border-right:1px solid #eef6f4}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:0 8px 30px rgba(34,115,108,.12)}
+    .brand h1{margin:0;font-size:18px}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+
+    .persona{margin-top:18px}
+    .persona h2{margin:0 0 8px 0}
+    .persona p{margin:0;color:var(--muted);font-size:13px}
+
+    .controls{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+    .btn{padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-ghost{background:transparent;border:1px solid rgba(10,40,36,.06)}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#032a25}
+    .small{font-size:13px;padding:8px 10px}
+
+    .modes{display:flex;gap:8px;margin-top:6px}
+    .mode{flex:1;padding:8px;border-radius:10px;text-align:center;border:1px solid rgba(12,34,25,.04);cursor:pointer}
+    .mode.active{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#032a25;font-weight:700}
+
+    .left-footer{position:absolute;left:28px;bottom:18px;color:var(--muted);font-size:12px}
+
+    /* Right panel: chat area */
+    .right{display:flex;flex-direction:column;height:100%}
+    .chat-top{padding:20px 22px;border-bottom:1px solid #eef6f4;display:flex;align-items:center;gap:12px}
+    .chat-top .title{font-weight:700}
+    .chat-log{flex:1;padding:20px;overflow:auto;background:linear-gradient(180deg,rgba(110,200,190,0.01),transparent)}
+
+    .msg{max-width:78%;padding:12px 14px;border-radius:14px;margin-bottom:14px;display:inline-block;line-height:1.35}
+    .msg.bot{background:linear-gradient(180deg,#f5fffc, #ecfffb);border:1px solid rgba(46,163,149,.08);align-self:flex-start}
+    .msg.user{background:linear-gradient(180deg,#032a25 0%, #0b3a36 100%);color:white;align-self:flex-end}
+
+    .meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+    .typing{display:inline-block;width:40px;height:12px}
+
+    .composer{display:flex;padding:14px;border-top:1px solid #eef6f4;gap:8px}
+    .input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid #e6f3ef;background:var(--glass) ;outline:none}
+    .send{padding:10px 16px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));font-weight:700;cursor:pointer}
+
+    /* fun little animated bubble */
+    .bubble{position:absolute;right:28px;top:28px;width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,var(--accent-2),var(--accent-1));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;box-shadow:0 12px 30px rgba(34,115,108,.12);transform:rotate(-12deg)}
+
+    /* responsiveness */
+    @media(max-width:880px){.app{grid-template-columns:1fr}.left{display:none}.bubble{display:none}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application">
+    <div class="left">
+      <div class="brand">
+        <div class="logo">NB</div>
+        <div>
+          <h1>Nabha Chat</h1>
+          <p>Friendly help — recipes, code, travel & jokes</p>
+        </div>
+      </div>
+
+      <div class="persona">
+        <h2>Assistant Persona</h2>
+        <p id="personaDesc">Playful helper with short answers, occasionally poetic.</p>
+      </div>
+
+      <div class="controls">
+        <div class="modes">
+          <div class="mode active" data-mode="fun">Fun</div>
+          <div class="mode" data-mode="help">Help</div>
+          <div class="mode" data-mode="code">Code</div>
+        </div>
+
+        <button class="btn btn-primary" id="resetBtn">Reset Conversation</button>
+        <button class="btn btn-ghost small" id="exportBtn">Export as JSON</button>
+
+        <label style="margin-top:10px;font-size:13px;color:var(--muted)">OpenAI API Key (optional)</label>
+        <input id="apiKey" class="small input" placeholder="sk-... (leave empty for local bot)"> 
+      </div>
+
+      <div class="left-footer">Built for you • Try typing "tell me a micro story"</div>
+    </div>
+
+    <div class="right">
+      <div class="chat-top">
+        <div class="title">Nabha — Chat</div>
+        <div style="flex:1"></div>
+        <div class="meta">Status: <span id="status">Local bot</span></div>
+      </div>
+
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+
+      <div class="composer">
+        <input id="inputBox" class="input" placeholder="Say something... Try 'help me plan a 3-day trip to Manali'" />
+        <button id="sendBtn" class="send">Send</button>
+      </div>
+    </div>
+
+    <div class="bubble">Hi 👋</div>
+  </div>
+
+  <script>
+    // Simple, self-contained chatbot frontend logic. No backend required.
+    (function(){
+      const chatLog = document.getElementById('chatLog');
+      const inputBox = document.getElementById('inputBox');
+      const sendBtn = document.getElementById('sendBtn');
+      const modes = document.querySelectorAll('.mode');
+      const status = document.getElementById('status');
+      const resetBtn = document.getElementById('resetBtn');
+      const exportBtn = document.getElementById('exportBtn');
+      const apiKeyInput = document.getElementById('apiKey');
+
+      let conversation = [];
+      let mode = 'fun';
+
+      function addMessage(who, text){
+        const wrapper = document.createElement('div');
+        wrapper.style.display='flex';
+        wrapper.style.flexDirection = who === 'user' ? 'row-reverse' : 'row';
+        wrapper.style.gap='8px';
+        const msg = document.createElement('div');
+        msg.className = 'msg ' + (who==='bot' ? 'bot' : 'user');
+        msg.textContent = text;
+        wrapper.appendChild(msg);
+        chatLog.appendChild(wrapper);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      function setStatus(s){ status.textContent = s }
+
+      function clearConversation(){
+        conversation = [];
+        chatLog.innerHTML = '';
+        addBot("Hello! I'm Nabha — your small helpful assistant. Try 'give me a travel plan' or 'tell me a joke'.")
+      }
+
+      function addUser(text){
+        conversation.push({from:'user', text, t:Date.now()});
+        addMessage('user', text);
+      }
+
+      function addBot(text){
+        conversation.push({from:'bot', text, t:Date.now()});
+        addMessage('bot', text);
+      }
+
+      // A tiny local 'brain': pattern-based replies + mode behaviour
+      function localReply(input){
+        const q = input.toLowerCase();
+        if(q.includes('joke')) return 'Why did the developer go broke? Because he used up all his cache. 😅';
+        if(q.includes('micro story') || q.includes('short story')) return 'On a rainy Kolkata night, the clock insisted on turning back — and a lost letter found its way home.';
+        if(q.includes('plan') && q.includes('trip')) return 'Day 1: Arrive, local bazaar, chai. Day 2: scenic drive, photo spots. Day 3: slow breakfast, return. Want specifics? tell me the destination.';
+        if(q.includes('hello')||q.includes('hi')) return 'Hey there! How can I help today?';
+        if(q.includes('manali')) return '3-day Manali plan:\nDay 1: Reach, Mall Road, Hadimba Temple.\nDay 2: Solang Valley adventure (paragliding optional).\nDay 3: Rohtang or local strolls. Need hotels/transport?';
+        if(q.includes('code') || q.includes('javascript')) return 'I can help with JS. Paste the snippet and say "explain" or "fix".';
+        if(q.includes('thank')) return 'You’re welcome — happy to help!';
+        if(q.length < 5) return 'Say a bit more — a sentence or two helps me give a better answer.';
+        // fallback: playful answer depending on mode
+        if(mode === 'fun') return 'Hmm — I sense curiosity. Ask me for a joke, a riddle, or a very short poem.';
+        if(mode === 'help') return 'I can explain concepts, create checklists, or produce step-by-step instructions. What do you need help with?';
+        if(mode === 'code') return 'Share the code or the error and I will help debug or optimize it.';
+        return 'I am thinking...';
+      }
+
+      // Optionally call OpenAI (if API key provided). This is safe: user keeps key locally.
+      async function callOpenAI(prompt){
+        const key = apiKeyInput.value.trim();
+        if(!key) return null;
+        setStatus('Calling OpenAI...');
+        try{
+          const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+            method:'POST',
+            headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+            body: JSON.stringify({
+              model:'gpt-4o-mini',
+              messages:[{role:'user',content:prompt}],
+              max_tokens:400
+            })
+          });
+          if(!resp.ok){
+            const t = await resp.text();
+            console.error('OpenAI error',t);
+            setStatus('OpenAI error');
+            return null;
+          }
+          const data = await resp.json();
+          const txt = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+          setStatus('Local bot');
+          return txt||null;
+        }catch(e){
+          console.error(e);
+          setStatus('OpenAI failed');
+          return null;
+        }
+      }
+
+      // Handles sending user message and producing reply
+      async function handleSend(){
+        const text = inputBox.value.trim();
+        if(!text) return;
+        addUser(text);
+        inputBox.value='';
+
+        // show typing indicator
+        const typing = document.createElement('div');
+        typing.className='msg bot';
+        typing.textContent='...';
+        chatLog.appendChild(typing);
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        // first try OpenAI if key present, otherwise local brain
+        const openaiResp = await callOpenAI(text);
+        chatLog.removeChild(typing);
+        if(openaiResp){
+          addBot(openaiResp);
+        }else{
+          const reply = localReply(text);
+          // small simulated delay for friendliness
+          await new Promise(r=>setTimeout(r, 300 + Math.random()*600));
+          addBot(reply);
+        }
+      }
+
+      // mode buttons
+      modes.forEach(m=>m.addEventListener('click',()=>{
+        modes.forEach(x=>x.classList.remove('active'));
+        m.classList.add('active');
+        mode = m.dataset.mode;
+        document.getElementById('personaDesc').textContent = mode==='fun' ? 'Playful helper with short answers, occasionally poetic.' : (mode==='help' ? 'Structured, step-by-step assistant.' : 'Technical, code-savvy responder.');
+      }));
+
+      sendBtn.addEventListener('click',handleSend);
+      inputBox.addEventListener('keydown',e=>{ if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
+
+      resetBtn.addEventListener('click',clearConversation);
+
+      exportBtn.addEventListener('click',()=>{
+        const blob = new Blob([JSON.stringify(conversation,null,2)],{type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href=url; a.download='conversation.json'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      // initial greeting
+      clearConversation();
+
+      // small UX: update status if API key typed
+      apiKeyInput.addEventListener('input',()=>{
+        setStatus(apiKeyInput.value.trim() ? 'OpenAI enabled' : 'Local bot');
+      });
+
+      // expose for debugging in console
+      window._nabha = {conversation, addUser, addBot, localReply};
+    })();
+  </script>
+</body>
+</html>
