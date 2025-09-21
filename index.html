@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soul Sync</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="home.css" />
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
+
+  <!-- Decorative Top Wave -->
+  <div class="absolute top-0 left-0 w-full -z-10">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#8e7cc3" fill-opacity="0.15"
+        d="M0,64L48,80C96,96,192,128,288,138.7C384,149,480,139,576,144C672,149,768,171,864,186.7C960,203,1056,213,1152,186.7C1248,160,1344,96,1392,64L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z">
+      </path>
+    </svg>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="w-full bg-white shadow-md py-4 fixed top-0 left-0 z-50">
+    <ul class="flex justify-center space-x-6 font-semibold text-lg">
+      <li><a class="nav-link active" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="chatbot.html">Chatbot</a></li>
+      <li><a class="nav-link" href="sosfile.html">SOS</a></li>
+      <li><a class="nav-link" href="blog.html">Blogs</a></li>
+      <li><a class="nav-link" href="face_detection.html">Face Detection</a></li>
+      <li><a class="nav-link" href="relaxing_games.html">Relaxing Games</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <main id="home" class="container mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-24 md:py-32 flex-grow relative z-10">
+    
+    <!-- Left text -->
+    <div class="text-center md:text-left md:w-1/2 space-y-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900">
+        <b>SOUL SYNC 💙 </b> 
+      </h1>
+      <h2 class="text-2xl md:text-3xl font-semibold text-gray-800">
+        Your Mental Health Matters 
+      </h2>
+      <p class="text-lg text-gray-600">
+        You Are Not Alone ! Soul Sync is your companion in the journey of mental well-being.  
+        A place of calm, hope, and support.
+      </p>
+
+      <!-- Main CTA -->
+      <div class="mt-6">
+        <button id="mainSignInBtn"
+          class="bg-gradient-to-r from-teal-500 to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:scale-105 transition">
+          Hey! New here? Join us →
+        </button>
+      </div>
+
+      <!-- Hidden auth buttons -->
+      <div id="authOptions" class="hidden flex space-x-4 justify-center md:justify-start mt-6">
+        <a href="signup_new.html">
+          <button class="bg-yellow-300 text-orange-700 font-bold py-2 px-6 rounded-full shadow hover:bg-yellow-400 transition">
+            Sign In
+          </button>
+        </a>
+        <a href="signup_new.html">
+          <button class="bg-pink-400 text-white font-bold py-2 px-6 rounded-full shadow hover:bg-pink-500 transition">
+            Sign Up
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right image -->
+    <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+      <img src="https://media.licdn.com/dms/image/v2/D4E12AQGfbUO0cKg6SQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1696243475654?e=2147483647&v=beta&t=lX1tnfFbwF-oMcLiyv11SzViQUtIFU2Q02HgHPfTh_A"
+        alt="Helping hand illustration"
+        class="home-image floating"/>
+    </div>
+  </main>
+
+  <!-- Features Section -->
+  <section class="bg-gradient-to-r from-teal-50 via-white to-blue-50 py-16 relative z-10">
+    <div class="container mx-auto text-center px-6">
+      <h2 class="text-3xl font-bold text-teal-700 mb-10">With Us, You Can Get 🌟</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="p-6 rounded-xl shadow hover:shadow-lg transition bg-white floating-slow">
+          <span class="text-5xl">💬</span>
+          <h3 class="text-xl font-semibold mt-4">Chat Support</h3>
+          <p class="text-gray-600 mt-2">Talk with Araddha, your AI mental health friend, anytime.</p>
+        </div>
+        <div class="p-6 rounded-xl shadow hover:shadow-lg transition bg-white floating-slow">
+          <span class="text-5xl">📖</span>
+          <h3 class="text-xl font-semibold mt-4">Helpful Blogs</h3>
+          <p class="text-gray-600 mt-2">Read uplifting stories, mental health tips, and advice.</p>
+        </div>
+        <div class="p-6 rounded-xl shadow hover:shadow-lg transition bg-white floating-slow">
+          <span class="text-5xl">📞</span>
+          <h3 class="text-xl font-semibold mt-4">SOS Help</h3>
+          <p class="text-gray-600 mt-2">Emergency contacts and crisis support at your fingertips.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chatbot CTA -->
+  <section class="text-center my-12 relative z-10">
+    <a href="https://poe.com/YourBotName" target="_blank">
+      <button class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:scale-105 transition">
+        💬 Chat with Araddha – Your Mental Health Friend
+      </button>
+    </a>
+  </section>
+
+  <!-- Quote Section -->
+  <footer class="bg-white py-10 mt-auto shadow-inner relative z-10">
+    <div class="container mx-auto text-center px-4">
+      <p class="text-xl italic text-gray-700 max-w-2xl mx-auto">
+        “The world breaks everyone, and afterward, many are strong at the broken places.”  
+        <br>— Ernest Hemingway
+      </p>
+      <p>© <span id="yr"></span> Soul Sync • <a href="privacy.html" class="link-muted">Privacy</a> • <a href="terms.html" class="link-muted">Terms</a></p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    // Toggle Auth Options
+    document.getElementById("mainSignInBtn").addEventListener("click", () => {
+      const options = document.getElementById("authOptions");
+      options.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>
+
